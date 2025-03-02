@@ -1,3 +1,6 @@
+* {
+    font-family: sans-serif;
+}
 #board {
     display: grid;
     width: 750px;
@@ -7,4 +10,9 @@
     width: 250px;
     height: 250px;
     border: 1px solid black;
+    text-align: center;
+    box-sizing: border-box;
+    line-height: 250px;
+    font-size: 200px;
+    font-weight: bold;
 }

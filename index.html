@@ -23,30 +23,31 @@
         let state = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
         let count = 0;
         let active = true;
+
         function checkState() {
             if (count >= 5) {
                 if (state[0][0] != 0  && 
                     ((state[0][0] === state[0][1] && state[0][1] === state [0][2])
                     || (state[0][0] === state[1][0] && state[1][0] === state[2][0]) 
                     || (state[0][0] === state[1][1] && state[1][1] === state[2][2]))) {
-                        active = false;
+                        this.endGame();
                         return state[0][0];
                 }
                 if (state[1][1] != 0 &&
                     ((state[1][0] === state[1][1] && state[1][1] === state [1][2])
                     || (state[0][1] === state[1][1] && state[1][1] === state[2][1]) 
                     || (state[2][0] === state[1][1] && state[1][1] === state[0][2]))) {
-                        active = false;
+                        this.endGame();
                         return state[1][1];
                 }
                 if (state[2][2] != 0 &&
                     ((state[2][2] === state[2][1] && state[2][1] === state [2][0])
                     || (state[2][2] === state[1][2] && state[1][2] === state[0][2]))) {
-                        active = false;
+                        this.endGame();
                         return state[2][2];
                 }
                 if (count == 9) {
-                    active = false;
+                    this.endGame();
                     return -1;
                 }
                 return 0;   
@@ -69,14 +70,19 @@
             this.active = true;
         }
 
-        function printSquare(x, y) {
-            console.log(state[x][y]);   
+        function endGame() {
+            active = false;
         }
-        return {state, checkState, addPiece, reset, printSquare};
+
+        function gameActive() {
+            return active;
+        }
+
+        return {state, checkState, addPiece, reset, endGame, gameActive};
     })();
 
-    const player1 = createPlayer("player one", 1);
-    const player2 = createPlayer("player two", 2);
+    const player1 = createPlayer("player one", "x");
+    const player2 = createPlayer("player two", "o");
     let currentPlayer = player1;
 
     const board = document.getElementById("board");
@@ -87,9 +93,10 @@
             newTile.dataset.status = "empty";
             newTile.classList.add("tile");
             newTile.addEventListener("click",(event) => {
-                if (newTile.dataset.status == "empty") {
+                if (newTile.dataset.status == "empty" && gameBoard.gameActive()) {
                     gameBoard.addPiece(currentPlayer, newTile.dataset.location);
                     newTile.dataset.status = "full";
+                    newTile.textContent = currentPlayer.piece;
                     if (currentPlayer == player1) {
                         currentPlayer = player2;
                     } else {
