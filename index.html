@@ -12,6 +12,12 @@
 </html>
 
 <script>
+    function createPlayer(name, piece) {
+        this.name = name;
+        this.piece = piece;
+        return {name, piece};
+    }
+
     const gameBoard = (function() {
         const state = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
         const count = 0;
@@ -35,10 +41,14 @@
                     return -2;
                 }
                 return -1;   
-            }
-             
+            } 
         }
 
-        return {state, checkState};
+        function addPiece(player, location) {
+            count++;
+            state[location[0]][location[1]] == player.piece;
+        }
+
+        return {state, checkState, addPiece};
     })();
 </script>
