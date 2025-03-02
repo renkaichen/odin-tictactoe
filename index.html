@@ -61,7 +61,6 @@
             }
             count++;
             state[location[0]][location[1]] = player.piece;
-            this.checkState();
         }
 
         function reset() {
@@ -86,6 +85,9 @@
     let currentPlayer = player1;
 
     const board = document.getElementById("board");
+    const message = document.createElement("p");
+    message.textContent = `${currentPlayer.name}'s turn`;
+    board.appendChild(message);
     for (let i = 0; i < 3; i++) {
         for (let j = 0; j < 3; j++) {
             const newTile = document.createElement("div");
@@ -97,10 +99,21 @@
                     gameBoard.addPiece(currentPlayer, newTile.dataset.location);
                     newTile.dataset.status = "full";
                     newTile.textContent = currentPlayer.piece;
-                    if (currentPlayer == player1) {
-                        currentPlayer = player2;
+                    if (gameBoard.checkState() != 0) {
+                        let winner = gameBoard.checkState();
+                        if (player1.piece == winner) {
+                            winner = player1;
+                        } else {
+                            winner = player2;
+                        }
+                        message.textContent = `${winner.name} Wins!`;
                     } else {
-                        currentPlayer = player1;
+                        if (currentPlayer == player1) {
+                            currentPlayer = player2;
+                        } else {
+                            currentPlayer = player1;
+                        }
+                        message.textContent = `${currentPlayer.name}'s turn`;
                     }
                 }  
 
@@ -108,4 +121,5 @@
             board.appendChild(newTile);
         }
     }
+
 </script>
