@@ -1,0 +1,10 @@
+#board {
+    display: grid;
+    width: 750px;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.tile {
+    width: 250px;
+    height: 250px;
+    border: 1px solid black;
+}

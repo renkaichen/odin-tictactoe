@@ -7,7 +7,8 @@
     <title>Tic-Tac-Toe</title>
 </head>
 <body>
-    
+    <div id="board">
+    </div>
 </body>
 </html>
 
@@ -19,36 +20,85 @@
     }
 
     const gameBoard = (function() {
-        const state = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
-        const count = 0;
+        let state = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+        let count = 0;
+        let active = true;
         function checkState() {
-            if (count >= 6) {
-                if ((state[0][0] === state[0][1] && state[0][1] === state [0][2])
+            if (count >= 5) {
+                if (state[0][0] != 0  && 
+                    ((state[0][0] === state[0][1] && state[0][1] === state [0][2])
                     || (state[0][0] === state[1][0] && state[1][0] === state[2][0]) 
-                    || (state[0][0] === state[1][1] && state[1][1] === state[2][2])) {
+                    || (state[0][0] === state[1][1] && state[1][1] === state[2][2]))) {
+                        active = false;
                         return state[0][0];
                 }
-                if ((state[1][0] === state[1][1] && state[1][1] === state [1][2])
+                if (state[1][1] != 0 &&
+                    ((state[1][0] === state[1][1] && state[1][1] === state [1][2])
                     || (state[0][1] === state[1][1] && state[1][1] === state[2][1]) 
-                    || (state[2][0] === state[1][1] && state[1][1] === state[0][2])) {
+                    || (state[2][0] === state[1][1] && state[1][1] === state[0][2]))) {
+                        active = false;
                         return state[1][1];
                 }
-                if ((state[2][2] === state[2][1] && state[2][1] === state [2][0])
-                    || (state[2][2] === state[1][2] && state[1][2] === state[0][2])) {
+                if (state[2][2] != 0 &&
+                    ((state[2][2] === state[2][1] && state[2][1] === state [2][0])
+                    || (state[2][2] === state[1][2] && state[1][2] === state[0][2]))) {
+                        active = false;
                         return state[2][2];
                 }
                 if (count == 9) {
-                    return -2;
+                    active = false;
+                    return -1;
                 }
-                return -1;   
+                return 0;   
             } 
+            return 0;
         }
 
         function addPiece(player, location) {
+            if (!active) {
+                return;
+            }
             count++;
-            state[location[0]][location[1]] == player.piece;
+            state[location[0]][location[1]] = player.piece;
+            this.checkState();
         }
 
-        return {state, checkState, addPiece};
+        function reset() {
+            this.state = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+            this.count = 0;
+            this.active = true;
+        }
+
+        function printSquare(x, y) {
+            console.log(state[x][y]);   
+        }
+        return {state, checkState, addPiece, reset, printSquare};
     })();
+
+    const player1 = createPlayer("player one", 1);
+    const player2 = createPlayer("player two", 2);
+    let currentPlayer = player1;
+
+    const board = document.getElementById("board");
+    for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+            const newTile = document.createElement("div");
+            newTile.dataset.location = String(i) + String(j);
+            newTile.dataset.status = "empty";
+            newTile.classList.add("tile");
+            newTile.addEventListener("click",(event) => {
+                if (newTile.dataset.status == "empty") {
+                    gameBoard.addPiece(currentPlayer, newTile.dataset.location);
+                    newTile.dataset.status = "full";
+                    if (currentPlayer == player1) {
+                        currentPlayer = player2;
+                    } else {
+                        currentPlayer = player1;
+                    }
+                }  
+
+            })
+            board.appendChild(newTile);
+        }
+    }
 </script>
