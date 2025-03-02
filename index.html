@@ -13,6 +13,32 @@
 
 <script>
     const gameBoard = (function() {
-        
+        const state = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+        const count = 0;
+        function checkState() {
+            if (count >= 6) {
+                if ((state[0][0] === state[0][1] && state[0][1] === state [0][2])
+                    || (state[0][0] === state[1][0] && state[1][0] === state[2][0]) 
+                    || (state[0][0] === state[1][1] && state[1][1] === state[2][2])) {
+                        return state[0][0];
+                }
+                if ((state[1][0] === state[1][1] && state[1][1] === state [1][2])
+                    || (state[0][1] === state[1][1] && state[1][1] === state[2][1]) 
+                    || (state[2][0] === state[1][1] && state[1][1] === state[0][2])) {
+                        return state[1][1];
+                }
+                if ((state[2][2] === state[2][1] && state[2][1] === state [2][0])
+                    || (state[2][2] === state[1][2] && state[1][2] === state[0][2])) {
+                        return state[2][2];
+                }
+                if (count == 9) {
+                    return -2;
+                }
+                return -1;   
+            }
+             
+        }
+
+        return {state, checkState};
     })();
 </script>
