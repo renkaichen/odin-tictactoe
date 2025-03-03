@@ -7,7 +7,14 @@
     <title>Tic-Tac-Toe</title>
 </head>
 <body>
-    <div id="board">
+    <div id="playerOneInfo">
+        <p>Player One</p>
+        <div id="playerIcon"></div>
+    </div>
+    <div id="board"></div>
+    <div id="playerTwoInfo">
+        <p>Player Two</p>
+        <div id="playerIcon"></div>
     </div>
 </body>
 </html>
@@ -80,8 +87,8 @@
         return {state, checkState, addPiece, reset, endGame, gameActive};
     })();
 
-    const player1 = createPlayer("player one", "x");
-    const player2 = createPlayer("player two", "o");
+    const player1 = createPlayer("Player One", "x");
+    const player2 = createPlayer("Player Two", "o");
     let currentPlayer = player1;
 
     const board = document.getElementById("board");
@@ -99,7 +106,7 @@
                     gameBoard.addPiece(currentPlayer, newTile.dataset.location);
                     newTile.dataset.status = "full";
                     newTile.textContent = currentPlayer.piece;
-                    if (gameBoard.checkState() != 0) {
+                    if (gameBoard.checkState() == "x" || gameBoard.checkState() == "o") {
                         let winner = gameBoard.checkState();
                         if (player1.piece == winner) {
                             winner = player1;
@@ -107,6 +114,8 @@
                             winner = player2;
                         }
                         message.textContent = `${winner.name} Wins!`;
+                    } else if (gameBoard.checkState() == -1) {
+                        message.textContent = `It's a tie!`;
                     } else {
                         if (currentPlayer == player1) {
                             currentPlayer = player2;

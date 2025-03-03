@@ -35,3 +35,23 @@ body {
     font-size: 30px;
     font-weight: bold;
 }
+
+#playerIcon {
+    width: 400px;
+    height: 400px;
+    background: url(./account.svg);
+}
+
+#playerOneInfo,
+#playerTwoInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#playerOneInfo > p,
+#playerTwoInfo > p {
+    font-weight: bold;
+    font-size: 25px;
+}
+
